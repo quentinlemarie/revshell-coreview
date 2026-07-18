@@ -1,0 +1,4 @@
+interface:
+  display_name: "CoreviewLight"
+  short_description: "Lean Coreview loop with minimal Claude handoff text"
+  default_prompt: "Use coreviewlight to review this plan or implementation with concise status blocks and keep monitoring until terminal commit review."
