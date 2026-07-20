@@ -5,9 +5,9 @@
 # in a single session: there is no second human-driven Codex session, no plan-file
 # marker dance, and no cross-session watcher. Each review round is just a BLOCKING
 # `codex exec` subprocess — this script — whose stdout carries Codex's findings and
-# whose last line carries a parseable verdict. Codex runs with `workspace-write`, and by
-# DEFAULT directly corrects clear issues — it edits the plan in --phase plan and source in
-# --phase code — and TAGS each edit (a `REVIEWER EDITS — IMPLEMENTER REVIEW REQUIRED:` block
+# whose last line carries a parseable verdict. Codex runs with `workspace-write`, and its
+# MANDATE is to directly implement EVERY finding it can fix itself — it edits the plan in
+# --phase plan and source in --phase code — and TAGS each edit (a `REVIEWER EDITS — IMPLEMENTER REVIEW REQUIRED:` block
 # in its output, plus an inline `[reviewer: reason]` marker in edited prose/plan). The host
 # (implementer) then reviews every tagged edit with `git diff` + focused tests before landing.
 #
@@ -16,9 +16,9 @@
 #                   [--base <ref>] [--model <m>] [--sandbox <mode>] [--context <file>] \
 #                   [--timeout <seconds>]
 #
-#   --plan      the ONE canonical plan file (Codex reads it; in --phase plan it edits it directly by default, tagged)
-#   --phase     plan  → review the PLAN; Codex edits the plan file directly by default (tagged), no source edits
-#               code  → review the implemented DIFF; Codex edits source directly by default (tagged) to fix clear issues
+#   --plan      the ONE canonical plan file (Codex reads it; in --phase plan it fixes every fixable issue in it directly, tagged)
+#   --phase     plan  → review the PLAN; Codex fixes every fixable plan issue directly (tagged), no source edits
+#               code  → review the implemented DIFF; Codex fixes every fixable finding in source directly (tagged)
 #   --repo      working root passed to `codex -C` (the temp-branch worktree)
 #   --base      git ref the diff is measured against (code phase only; default: HEAD~1)
 #   --context   optional file whose contents are appended as extra steering for this round
@@ -107,9 +107,11 @@ Your job, as a tough but fair peer:
 - Verify load-bearing claims in the plan (file:line references, named symbols) with read-only
   checks against the repo at $REPO. Flag anything unverifiable or wrong.
 - Pressure-test the approach: missing edge cases, wrong abstraction, risky steps, scope gaps.
-- DEFAULT: directly correct concrete, clear issues by editing the plan file (you run with
-  $SANDBOX). Only *describe* (don't auto-fix) judgement calls / design disagreements /
-  anything ambiguous — put those in the findings for the implementer to decide.
+- MANDATE: directly implement EVERY plan issue you can fix yourself by editing the plan file
+  (you run with $SANDBOX) — structural gaps included, not just wording. Never hand back a
+  fixable issue for the implementer to apply. Reserve a description-without-a-fix ONLY for
+  genuine judgement calls / design decisions the author must make, or user arbitration. A
+  "$VERDICT_CHANGES" verdict MUST still carry your own plan edits for everything that was fixable.
 - TAG every edit you make so the implementer reviews it: (1) inline in the plan, append
   " [reviewer: <reason>]" on or beside each changed line; (2) in your reply, list every
   edit under a block headed exactly:
@@ -145,9 +147,12 @@ HARD CONSTRAINTS — follow these or the review is useless:
 - You MAY open at most a couple of specific changed files in $REPO for surrounding
   context if strictly needed — but default to the diff; do not go hunting.
 - Be concise. List each finding as: file:line - issue (CRITICAL/HIGH/MEDIUM/LOW).
-- DEFAULT: directly fix clear, concrete issues by editing source in $REPO (sandbox: $SANDBOX).
-  Only *describe* (don't auto-fix) judgement calls / design disagreements / anything ambiguous —
-  leave those as findings for the implementer to decide.
+- MANDATE: directly implement EVERY finding you can fix mechanically yourself, by editing
+  source in $REPO (sandbox: $SANDBOX) — structural fixes included, not just one-liners. Never
+  hand back a fixable finding for the implementer to apply. Reserve a description-without-a-fix
+  ONLY for items that genuinely need architectural judgement the author must make, or user
+  arbitration. A "$VERDICT_CHANGES" verdict MUST still carry your own self-fixes for everything
+  that was mechanically fixable.
 - TAG every source edit you make so the implementer reviews it before it lands: list each one
   in your reply under a block headed exactly:
       REVIEWER EDITS — IMPLEMENTER REVIEW REQUIRED:

@@ -250,10 +250,12 @@ before dispatching implementation agents (plan mode otherwise blocks sub-agent s
    no-op), run focused tests + build per stream.
 3. Append a `coreview-impl-status` marker (impl side) with the **`ready for review`** trigger, then arm
    the Phase 2 watcher (`scripts/phase2-watcher.sh`).
-4. Reviewer reviews the worktree diff(s) — launching its own review sub-agents per stream — and either
-   requests changes (`changes requested`) **or directly fixes** small issues in code and notes the
-   correction in the plan. Implementer addresses feedback (agents for non-trivial scope, direct edits
-   for 1–3 mechanical files), re-verifies, appends its next marker.
+4. Reviewer reviews the worktree diff(s) — launching its own review sub-agents per stream — and
+   **directly implements every finding it can fix mechanically itself** in code, noting each
+   correction in the plan; it requests changes (`changes requested`) only for items needing the
+   author's architectural judgement or user arbitration, and even then still lands its own fixes
+   for everything mechanically fixable. Implementer addresses feedback (agents for non-trivial
+   scope, direct edits for 1–3 mechanical files), re-verifies, appends its next marker.
 5. **Review rounds never create commits** (2026-07-18): fixes are working-tree edits. If a
    cross-merge reviewer genuinely needs a committed tip, keep at most ONE local WIP checkpoint per
    worktree and refresh it with `git commit --amend` — never one per round, never pushed, and squashed
@@ -406,7 +408,7 @@ Phase 1 (regular & shellrev): implementer writes plan → reviewer corrects via 
   → loop until reviewer: `ready for implementation`
   ↓
 Phase 2 / light loop: implementer writes code (parallel agents)
-  regular:  reviewer reviews + may directly fix; implementer addresses feedback   (watcher)
+  regular:  reviewer reviews + directly implements every fixable finding; implementer addresses feedback  (watcher)
   light:    reviewer steers only; implementer applies every fix                   (watcher)
   shellrev: Claude implements; `codex-review.sh` blocking call per round; Codex may fix (NO watcher)
   → loop until reviewer: `ready to ship`

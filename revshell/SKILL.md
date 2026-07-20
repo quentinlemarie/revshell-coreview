@@ -27,11 +27,15 @@ this exact contract:
 - **Output:** concise findings, each as `file:line — issue (CRITICAL/HIGH/MEDIUM/LOW)`,
   then a final line that is EXACTLY one of:
   `VERDICT: ready to ship` / `VERDICT: changes requested`.
-- **Direct correction is the DEFAULT (both phases).** The reviewer SHOULD directly fix
-  clear, concrete issues — edit the plan in Phase 1, edit source in Phase 2 — rather than
-  only describing them. It TAGS every edit it makes so the implementer reviews it (see
-  *Reviewer direct-edit tagging* below). It still only *describes* (does not auto-fix)
-  judgement calls, design disagreements, or anything ambiguous — those go in the findings.
+- **Direct implementation is the MANDATE (both phases).** The reviewer MUST directly
+  implement EVERY finding it can fix mechanically itself — edit the plan in Phase 1, edit
+  source in Phase 2 — structural fixes included, not just clear one-liners. It never hands
+  back a fixable finding for the implementer to apply. It TAGS every edit it makes so the
+  implementer reviews it (see *Reviewer direct-edit tagging* below). It reserves a
+  *description-without-a-fix* ONLY for items that genuinely need architectural judgement the
+  author must make, or user arbitration — those go in the findings. A `changes requested`
+  verdict MUST still be accompanied by the reviewer's own self-fixes for everything that was
+  mechanically fixable; it is never a substitute for doing the fixes the reviewer can do.
 
 ## Reviewer direct-edit tagging (the default — applies to BOTH backends)
 

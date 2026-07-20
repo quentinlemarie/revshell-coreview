@@ -91,8 +91,11 @@ Your job, as a tough but fair peer:
 - Verify load-bearing claims in the plan (file:line references, named symbols) with read-only
   checks against the repo at $REPO. Flag anything unverifiable or wrong.
 - Pressure-test the approach: missing edge cases, wrong abstraction, risky steps, scope gaps.
-- DEFAULT: directly correct concrete, clear issues by editing the plan file. Only *describe*
-  (don't auto-fix) judgement calls / design disagreements / anything ambiguous.
+- MANDATE: directly implement EVERY plan issue you can fix yourself by editing the plan file —
+  structural gaps included, not just wording. Never hand back a fixable issue for the implementer
+  to apply. Reserve a description-without-a-fix ONLY for genuine judgement calls / design decisions
+  the author must make, or user arbitration. A "changes requested" verdict MUST still carry your
+  own plan edits for everything that was fixable.
 - TAG every edit you make: (1) inline in the plan, append " [reviewer: <reason>]" on or beside
   each changed line; (2) in your reply, list every edit under a block headed exactly:
       REVIEWER EDITS — IMPLEMENTER REVIEW REQUIRED:
@@ -123,8 +126,11 @@ HARD CONSTRAINTS:
 - Do NOT recall or reference past sessions or other repositories.
 - You MAY open at most a couple of specific changed files for surrounding context — default to the diff.
 - List each finding as: file:line - issue (CRITICAL/HIGH/MEDIUM/LOW).
-- DEFAULT: directly fix clear, concrete issues by editing source in $REPO.
-  Only *describe* judgement calls / design disagreements — put those in findings.
+- MANDATE: directly implement EVERY finding you can fix mechanically yourself by editing source
+  in $REPO — structural fixes included, not just one-liners. Never hand back a fixable finding for
+  the implementer to apply. Reserve a description-without-a-fix ONLY for items that genuinely need
+  architectural judgement the author must make, or user arbitration. A "changes requested" verdict
+  MUST still carry your own self-fixes for everything that was mechanically fixable.
 - TAG every source edit under a block headed exactly:
       REVIEWER EDITS — IMPLEMENTER REVIEW REQUIRED:
   as "file:line — what changed + why" (write "... : none" if you made no edits).

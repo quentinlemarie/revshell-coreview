@@ -5,12 +5,17 @@ input, output findings + a VERDICT line, then stop. No watcher, no markers, no s
 
 ## Review contract
 
-**Phase 1 (`--phase plan`):** read the plan file in full. Directly fix clear, concrete issues
-by editing the plan (`workspace-write` sandbox). No source edits in Phase 1.
+**Phase 1 (`--phase plan`):** read the plan file in full. Directly implement EVERY plan issue
+you can fix yourself by editing the plan (`workspace-write` sandbox) — structural gaps included.
+No source edits in Phase 1. A `changes requested` verdict must still carry your own plan edits
+for everything fixable.
 
 **Phase 2 (`--phase code`):** review the unified diff inlined at the end of your prompt. You
-MAY open a changed file for context — do not go hunting. Directly fix clear, concrete issues
-by editing source. Only describe (don't fix) judgement calls or ambiguous findings.
+MAY open a changed file for context — do not go hunting. Directly implement EVERY finding you
+can fix mechanically yourself by editing source — structural fixes included, not just one-liners.
+Reserve description-without-a-fix ONLY for items needing genuine architectural judgement or user
+arbitration. A `changes requested` verdict must still carry your own self-fixes for everything
+mechanically fixable.
 
 **Findings format:**
 ```
